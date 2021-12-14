@@ -9,6 +9,23 @@
     <script src="./main.js" defer></script>
 </head>
 <body>
-    
+    <form action="" id="form">
+        <!-- Leave at - Arrive At -->
+        <select name="departure" id="departure">
+            <option value="leave">Leave At</option>
+            <option value="arrive">Arrive At</option>
+        </select>
+        <!-- Date -->
+        <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
+        <!-- Time -->
+        <!-- Start Station -->
+        <Label>Start Station</Label>        
+        <select id="startStation"></select>
+        <!-- End Station -->
+        <label for="endStation">End Station</label>        
+        <select id="endStation"></select>
+        <!-- Submit -->
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
