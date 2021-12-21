@@ -4,28 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Document</title>        
     <link rel="stylesheet" href="./main.css">
     <script src="./main.js" defer></script>
 </head>
 <body>
-    <form action="" id="form">
-        <!-- Leave at - Arrive At -->
-        <select name="departure" id="departure">
-            <option value="leave">Leave At</option>
-            <option value="arrive">Arrive At</option>
-        </select>
-        <!-- Date -->
-        <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
-        <!-- Time -->
-        <!-- Start Station -->
-        <Label>Start Station</Label>        
-        <select id="startStation"></select>
-        <!-- End Station -->
-        <label for="endStation">End Station</label>        
-        <select id="endStation"></select>
-        <!-- Submit -->
-        <input type="submit" value="Submit">
-    </form>
+    <section id='Station'>
+        <form action="" id="form">
+            <!-- Leave at - Arrive At -->
+            <Label>Leave at</Label>
+            <!-- Date -->
+            <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
+            <!-- Time -->
+            <!-- Start Station -->
+            <Label>Start Station</Label>        
+            <select id="startStation"></select>
+            <!-- End Station -->
+            <label for="endStation">End Station</label>        
+            <select id="endStation"></select>
+            <!-- Submit -->
+            <input type="submit" value="Submit">
+        </form>
+        <section id='bottom'>
+            <div id='StationInfo'></div>    
+            <p id='StationNotification'></p>
+        </section>               
+    </section>
+    <section id='Additional'>
+        <img id="map"></div>
+        <div id='Timeline'></div>  
+        
+        <iframe width='100%' height='400px'         
+        src="https://api.mapbox.com/styles/mapbox/dark-v10/pin-l-embassy+f74e4e(45.4225,-73.8526)/45.4225,-73.8526,5/500x300?access_token=pk.eyJ1IjoiYmFubmVkY3ViMyIsImEiOiJja3g2dDhhYXMyb3E1MnZvYnI0bHNveGZkIn0.i1_kDbQsKgnnZ2kkPkBwAw"></iframe>
+       
+    </section>
 </body>
 </html>

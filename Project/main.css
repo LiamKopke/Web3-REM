@@ -1,0 +1,42 @@
+body{
+    display: flex;
+    flex-direction: row;
+  }
+  /* Top Box */
+  #Station{
+    flex: 1;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+  }
+  #form{
+    margin: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #form input, #form select{
+    height: 2rem;
+    margin: 0.25rem 0;
+  }
+  #bottom{
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+  }
+  #StationInfo, #StationNotification{
+    margin: 1rem;
+    flex: 1; 
+  }
+  
+  /* Bottom Box */
+  #Additional{
+    flex: 2;
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+  }
+  #Timeline, #map{
+    margin: 1rem;
+    flex: 1; 
+  }
