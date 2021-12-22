@@ -7,7 +7,7 @@ body{
     flex: 1;
     border: 1px solid black;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
   }
   #form{
     margin: 1rem;
@@ -20,6 +20,7 @@ body{
     margin: 0.25rem 0;
   }
   #bottom{
+    flex: 1;
     display: flex;
     flex-direction: row;
     margin: 1rem;
@@ -31,7 +32,7 @@ body{
   
   /* Bottom Box */
   #Additional{
-    flex: 2;
+    flex: 1;
     border: 1px solid blue;
     display: flex;
     flex-direction: column;

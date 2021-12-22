@@ -3,6 +3,11 @@ let longitude = 0;
 let secondsPerHour = 3600;
 let millisecondsPerSecond = 1000;
 let divider = 50;
+let address;
+let marker;
+let baseURL = 'http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=10&maptype=roadmap&size=600x500';
+let firstLetter;
+let apiKey = '&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY';
 // Used to find the correct time using UTC and not local time
 let timeZoneOffset = 5;
 let x = '98 avenue Kirkwood, Beaconsfield, QC, Canada';
@@ -41,6 +46,7 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
         let name = path[i].Name;
         let id = path[i].SegmentId;
         let stationId = path[i].StationId;
+        console.log(path[i]);
 
         // Gets the schedule for the station
         let iSchedule = await (await fetch('http://10.101.0.12:8080/schedule/' + name)).json();
@@ -76,10 +82,22 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
 
         
         // Display the information about that station
-        displayStationInfo(stationId);
+        await displayStationInfo(stationId);
 
         // Display the notification at that station
-        displayNotification(stationId); 
+        displayNotification(stationId);
+        
+        // Gets the first letter of the station name for the marker on the map
+        firstLetter = name.charAt(0).normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+
+        // Gets the latitude and longitude of the station from the address
+        await getLocation();    
+        
+        // Makes the marker be the correct location
+        marker = '&markers=color:red%7Clabel:' + firstLetter +'%7C' + latitude + ',' + longitude;
+
+        // Displays the map with the marker
+        displayLocation();
 
         // Wait at each station
         await timeBetweenStations(totalSeconds);
@@ -163,7 +181,8 @@ async function displayStationInfo(id){
     let t = "<span style='color: green'>True</span>";
     let f = "<span style='color: red'>False</span>";
     name.innerHTML += info[0].Name;
-    name.innerHTML += '<br/> Address : ' + info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;
+    address = info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;
+    name.innerHTML += '<br/> Address : ' + info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;;
     name.innerHTML += info[0].AccessibilityFeature == true ? "<br/>Accessibility Features: " + t : "<br/>Accessibility Features: " + f;
     name.innerHTML += info[0].BicycleAvailability == true ? "<br/>Bicycle Availability: " + t : "<br/>Bicycle Availability: " + f;
     name.innerHTML += info[0].Elevator == true ? "<br/>Elevator Availability: " + t : "<br/>Elevator Availability: " + f;
@@ -175,9 +194,15 @@ async function displayNotification(id){
 }
 // for the api, gets the coordinates from the address
 async function getLocation() {
-    let response = await fetch('http://api.positionstack.com/v1/forward?access_key=30de06d4d486065ed537303ed185cc7e&query=' + encodeURIComponent(x));
+    console.log(address);
+    let response = await fetch('http://api.positionstack.com/v1/forward?access_key=30de06d4d486065ed537303ed185cc7e&query=' + encodeURIComponent(address));
     let data = await response.json();
     latitude = data.data[0].latitude;
     longitude = data.data[0].longitude;
     console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
+}
+function displayLocation(){
+    let map = document.querySelector('#map');
+    map.src = baseURL + marker + apiKey;
+    console.log(map.src)
 }
