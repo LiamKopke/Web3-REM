@@ -9,30 +9,32 @@
     <script src="./main.js" defer></script>
 </head>
 <body>
-    <section id='Station'>
-        <form action="" id="form">
-            <!-- Leave at - Arrive At -->
-            <Label>Leave at</Label>
-            <!-- Date -->
-            <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
-            <!-- Time -->
-            <!-- Start Station -->
-            <Label>Start Station</Label>        
-            <select id="startStation"></select>
-            <!-- End Station -->
-            <label for="endStation">End Station</label>        
-            <select id="endStation"></select>
-            <!-- Submit -->
-            <input type="submit" value="Submit">
-        </form>
-        <section id='bottom'>
-            <div id='StationInfo'></div>    
-            <p id='StationNotification'></p>
-        </section>               
+    <section id="top">
+        <section id='Station'>
+            <form action="" id="form">
+                <!-- Leave at - Arrive At -->
+                <Label>Leave at</Label>
+                <!-- Date -->
+                <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
+                <!-- Time -->
+                <!-- Start Station -->
+                <Label>Start Station</Label>        
+                <select id="startStation"></select>
+                <!-- End Station -->
+                <label for="endStation">End Station</label>        
+                <select id="endStation"></select>
+                <!-- Submit -->
+                <input type="submit" value="Submit">
+            </form>
+            <section id='bottom'>
+                <div id='StationInfo'></div>    
+                <p id='StationNotification'></p>
+            </section>               
+        </section>
+        <section id='Additional'>
+            <img id="map" src='http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=9&maptype=roadmap&size=500x250&scale=2&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY'><!--API KEY: AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY -->
+        </section>
     </section>
-    <section id='Additional'>
-         <!--<img id="map" src='http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=10&maptype=roadmap&size=600x500&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY'><!--API KEY: AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY -->
-        <div id='Timeline'></div>
-    </section>
+    <div id='Timeline'></div>    
 </body>
 </html>

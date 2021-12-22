@@ -5,7 +5,7 @@ let millisecondsPerSecond = 1000;
 let divider = 50;
 let address;
 let marker;
-let baseURL = 'http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=10&maptype=roadmap&size=600x500';
+let baseURL = 'http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=9&maptype=roadmap&size=500x250&scale=2';
 let firstLetter;
 let apiKey = '&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY';
 // Used to find the correct time using UTC and not local time
@@ -39,9 +39,10 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
     let speed = await (await fetch('http://10.101.0.12:8080/averageTrainSpeed/')).json();
     speed = speed[0].AverageSpeed;
 
+    let timeline = document.querySelector('#Timeline');
+    timeline.innerHTML = '<h2>Timeline</h2>';
     // The path
     for(let i = 0; i < path.length - 1; i++) {
-
         // Gets the name and id of the station is it at
         let name = path[i].Name;
         let id = path[i].SegmentId;
@@ -53,11 +54,18 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
 
         // Gets the next departure time from that station
         let departure = findNextTime(iSchedule, id, dateTime);
-        console.log('Leaving from ' + name + ' at ' + departure);
-        
+
+        // Displays the timeline
+        timeline.innerHTML += '<h4>' + name + '</h4>';
+        if(i != 0)
+            timeline.innerHTML += 'Arrived at ' + path[i].Name + ' at ' + dateTime + '<br/>';
+        timeline.innerHTML += 'Leaving from ' + name + ' at ' + departure + '<br/>';
+        scroll();
+
         // Finds how long the train will take to get to the next station
         secondsToAdd = await findTravelTime(path[i], path[i + 1], speed);            
-        console.log('Arriving at ' + path[i + 1].Name + ' in ' + secondsToAdd + ' seconds');
+        timeline.innerHTML += 'Arriving at ' + path[i + 1].Name + ' in ' + secondsToAdd + ' seconds' + '<br/><br/>';
+        scroll();
 
         // Adds the time to the dateTime   
         departure = new Date(departure);
@@ -79,7 +87,6 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
         dateTime.setSeconds(secondsToSet);
         dateTime.setMinutes(minutesToSet);
         dateTime.setHours(hoursToSet);
-
         
         // Display the information about that station
         await displayStationInfo(stationId);
@@ -100,14 +107,35 @@ document.querySelector('#form').addEventListener('submit', async (e) => {
         displayLocation();
 
         // Wait at each station
-        await timeBetweenStations(totalSeconds);
+        await timeBetweenStations(totalSeconds);        
     };   
+    timeline.innerHTML += '<h4>' + path[path.length - 1].Name + '</h4>';
+    timeline.innerHTML += 'Arrived at ' + path[path.length - 1].Name + ' at ' + dateTime + '<br/>';
+    scroll();
+    
     // Display the information about the last station
-    displayStationInfo(path[path.length - 1].StationId);
+    await displayStationInfo(path[path.length - 1].StationId);
 
     // Display the notification at the last station
-    displayNotification(path[path.length - 1].StationId);    
+    displayNotification(path[path.length - 1].StationId);   
+    
+    // Display the map for the last location
+    // Gets the first letter of the station name for the marker on the map
+    firstLetter = path[path.length-1].Name.charAt(0).normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+
+    // Gets the latitude and longitude of the station from the address
+    await getLocation();    
+    
+    // Makes the marker be the correct location
+    marker = '&markers=color:red%7Clabel:' + firstLetter +'%7C' + latitude + ',' + longitude;
+
+    // Displays the map with the marker
+    displayLocation();
+
+    // Wait at each station
+    await timeBetweenStations(totalSeconds);
 });
+
 // Adds the stations names to the dropdown in the form
 async function getStations(){
     let stations = await (await fetch('http://10.101.0.12:8080/stations')).json();
@@ -177,15 +205,34 @@ async function displayStationInfo(id){
 
     // Station Name
     let name = document.createElement('div');
+
+    // Header
     name.innerHTML = '<h2>Station Information</h2>';
+
+    // Spans for true/false
     let t = "<span style='color: green'>True</span>";
     let f = "<span style='color: red'>False</span>";
-    name.innerHTML += info[0].Name;
+
+    // Sets the address for the geo location
     address = info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;
-    name.innerHTML += '<br/> Address : ' + info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;;
-    name.innerHTML += info[0].AccessibilityFeature == true ? "<br/>Accessibility Features: " + t : "<br/>Accessibility Features: " + f;
-    name.innerHTML += info[0].BicycleAvailability == true ? "<br/>Bicycle Availability: " + t : "<br/>Bicycle Availability: " + f;
-    name.innerHTML += info[0].Elevator == true ? "<br/>Elevator Availability: " + t : "<br/>Elevator Availability: " + f;
+
+    // Add the information to the station
+    name.innerHTML += info[0].Name;    
+    name.innerHTML += '<br/> Address : ' + info[0].Number + ' ' +  info[0].StreetName + ', ' + info[0].City + ' ' + info[0].Province + ' ' + info[0].Country;
+
+    // Adds the more info div
+    let moreInfo = document.createElement('div');
+    moreInfo.id = 'MoreInfo';
+    moreInfo.style.display = 'none';
+    moreInfo.innerHTML = info[0].AccessibilityFeature == true ? "<br/>Accessibility Features: " + t : "<br/>Accessibility Features: " + f;
+    moreInfo.innerHTML += info[0].BicycleAvailability == true ? "<br/>Bicycle Availability: " + t : "<br/>Bicycle Availability: " + f;
+    moreInfo.innerHTML += info[0].Elevator == true ? "<br/>Elevator Availability: " + t : "<br/>Elevator Availability: " + f;
+    name.appendChild(moreInfo);    
+
+    // Adds the more info button
+    name.innerHTML += '<br/><button onClick="showMoreInfo()">More Info</button>';
+
+    // Adds it to the DOM
     station.innerHTML = name.innerHTML;
 }
 // Displays the notification at the station
@@ -201,8 +248,24 @@ async function getLocation() {
     longitude = data.data[0].longitude;
     console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
 }
+// Displays the map with the marker
 function displayLocation(){
     let map = document.querySelector('#map');
     map.src = baseURL + marker + apiKey;
     console.log(map.src)
+}
+// Show more info button logic
+function showMoreInfo(){
+    let vis = document.querySelector('#MoreInfo').style.display;
+    if(vis == 'none') {
+        document.querySelector('button').innerText = 'Show Less';
+        document.querySelector('#MoreInfo').style.display = 'block';
+    } else {
+        document.querySelector('button').innerText = 'Show More';
+        document.querySelector('#MoreInfo').style.display = 'none';
+    }
+}
+function scroll(){
+    let time = document.querySelector('#Timeline');
+    time.scrollTop = time.scrollHeight;
 }
