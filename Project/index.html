@@ -15,7 +15,7 @@
                 <!-- Leave at - Arrive At -->
                 <Label>Leave at</Label>
                 <!-- Date -->
-                <input type="datetime-local" name="date-time" id="time" value="2022-01-01T08:30">
+                <input type="datetime-local" name="date-time" id="time">
                 <!-- Time -->
                 <!-- Start Station -->
                 <Label>Start Station</Label>        
@@ -27,14 +27,20 @@
                 <input type="submit" value="Submit">
             </form>
             <section id='bottom'>
-                <div id='StationInfo'></div>    
-                <p id='StationNotification'></p>
+                <div id='StationInfo'>
+                    <h2>Station Information</h2>
+                </div>    
+                <div id='StationNotification'>
+                    <h2>Station Notification</h2>
+                </div>
             </section>               
         </section>
         <section id='Additional'>
             <img id="map" src='http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=9&maptype=roadmap&size=500x250&scale=2&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY'><!--API KEY: AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY -->
         </section>
     </section>
-    <div id='Timeline'></div>    
+    <div id='Timeline'>
+        <h2>Timeline</h2>
+    </div>    
 </body>
 </html>

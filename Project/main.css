@@ -1,4 +1,5 @@
 body{
+    background: #e6e6e6;
     display: flex;
     flex-direction: column;
     height: 99vh;
@@ -8,6 +9,7 @@ body{
   }
 
   #Timeline{
+    background-color: white;
       margin: 1vh 0;
       border: 1px solid black;
       padding: 1rem;;
@@ -18,6 +20,8 @@ body{
   }
   /* Top Box */
   #Station{
+      background-color: white;
+      margin-right: 0.5vh;
       border: 1px solid black;
     flex: 1;
     display: flex;
@@ -41,6 +45,7 @@ body{
   #StationInfo, #StationNotification{
     margin: 1rem;
     flex: 1; 
+    overflow: auto;
   }
 
 button{
@@ -49,6 +54,8 @@ button{
   
   /* Bottom Box */
   #Additional{
+    background-color: white;
+      margin-left: 0.5vh;
     flex: 1;
     border: 1px solid black;
     display: flex;
