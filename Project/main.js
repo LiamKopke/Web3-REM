@@ -9,7 +9,7 @@ let address;
 let marker;
 let baseURL = 'http://maps.googleapis.com/maps/api/staticmap?center=laval&zoom=9&maptype=roadmap&size=500x250&scale=2';
 let firstLetter;
-let apiKey = '&key=AIzaSyB7kIA7meK5zSLTcptvQ84sen10b8k7ArY';
+let apiKey = '[KEY_GOES_HERE]';
 // Used to find the correct time using UTC and not local time
 let timeZoneOffset = 5;
 let x = '98 avenue Kirkwood, Beaconsfield, QC, Canada';
@@ -320,7 +320,7 @@ async function findTravelTime(startStation, endStation, speed){
 // for the api, gets the coordinates from the address
 async function getLocation() {
     console.log(address);
-    let response = await fetch('http://api.positionstack.com/v1/forward?access_key=30de06d4d486065ed537303ed185cc7e&query=' + encodeURIComponent(address));
+    let response = await fetch('http://api.positionstack.com/v1/forward?access_key=[KEY_GOES_HERE]&query=' + encodeURIComponent(address));
     let data = await response.json();
     latitude = data.data[0].latitude;
     longitude = data.data[0].longitude;
